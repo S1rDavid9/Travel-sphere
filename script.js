@@ -38,6 +38,133 @@ window.onclick = function(event) {
     }
 }
 
+
+document.addEventListener('DOMContentLoaded', () => {
+    const flightSearchButton = document.getElementById('flightSearchButton');
+    const flightSearchModal = document.getElementById('flightSearchModal');
+    const flightSearchCloseBtn = flightSearchModal.querySelector('.close');
+    const flightSearchForm = document.getElementById('flightSearchForm');
+    const flightResultsContainer = document.getElementById('flightResults');
+
+    // Open Flight Search Modal
+    flightSearchButton.addEventListener('click', () => {
+        console.log('Opening flight search modal');
+        flightSearchModal.style.display = 'block';
+    });
+
+    // Close Flight Search Modal
+    flightSearchCloseBtn.addEventListener('click', () => {
+        console.log('Closing flight search modal');
+        flightSearchModal.style.display = 'none';
+    });
+
+    // Close modal if clicked outside
+    window.addEventListener('click', (event) => {
+        if (event.target === flightSearchModal) {
+            console.log('Click outside modal detected, closing modal');
+            flightSearchModal.style.display = 'none';
+        }
+    });
+
+    // Flight Search Form Submission
+    flightSearchForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const fromLocation = document.getElementById('fromId').value.toUpperCase();
+        const toLocation = document.getElementById('toId').value.toUpperCase();
+        const departDate = document.getElementById('departDate').value;
+
+        console.log('Form submitted with values:', { fromLocation, toLocation, departDate });
+
+        try {
+            // Show loading state
+            flightResultsContainer.innerHTML = '<p>Searching for flights...</p>';
+            console.log('Fetching flight data from API...');
+
+            // OpenSky Network API
+            const response = await fetch('https://opensky-network.org/api/states/all');
+            console.log('API response status:', response.status);
+
+            if (!response.ok) {
+                throw new Error('API request failed');
+            }
+
+            const flightData = await response.json();
+            console.log('API response data:', flightData);
+
+            displayFlightResults(flightData.states, fromLocation, toLocation);
+
+            // Close modal after search
+            flightSearchModal.style.display = 'none';
+        } catch (error) {
+            console.error('Flight Search Error:', error);
+            flightResultsContainer.innerHTML = `
+                <p class="error">Unable to retrieve flights. Please try again.</p>
+                <p>Error details: ${error.message}</p>
+            `;
+        }
+    });
+
+    // Function to display flight results
+    function displayFlightResults(flights, fromAirport, toAirport) {
+        console.log('Displaying flight results', { flights, fromAirport, toAirport });
+
+        // Clear previous results
+        flightResultsContainer.innerHTML = '';
+
+        // Filter and process flights
+        const filteredFlights = flights?.filter(flight => {
+            // Basic filtering - check if flight's origin or destination matches search criteria
+            return (flight[1] && 
+                   (flight[1].toUpperCase().includes(fromAirport) || 
+                    flight[1].toUpperCase().includes(toAirport)));
+        });
+
+        console.log('Filtered flights:', filteredFlights);
+
+        // Check if flights array is empty
+        if (!filteredFlights || filteredFlights.length === 0) {
+            flightResultsContainer.innerHTML = `
+                <p>No flights found matching your search criteria:</p>
+                <p>From: ${fromAirport}, To: ${toAirport}</p>
+            `;
+            return;
+        }
+
+        // Create results header
+        const resultsHeader = document.createElement('h3');
+        resultsHeader.textContent = `Flight Results (${filteredFlights.length} flights found)`;
+        flightResultsContainer.appendChild(resultsHeader);
+
+        // Create results (each flight as a card)
+    filteredFlights.forEach((flight, index) => {
+        const flightElement = document.createElement('div');
+        flightElement.classList.add('flight-card');
+        
+        // Handle flight date and format it correctly
+        const flightDate = flight[0] ? new Date(flight[0] * 1000) : null;
+        const formattedDate = flightDate && !isNaN(flightDate)
+            ? flightDate.toLocaleString()
+            : 'Invalid Date';
+
+        // Creating structured layout for each flight's details in a card format
+        flightElement.innerHTML = `
+            <div class="flight-card-header">
+                <h4>Flight #${index + 1}</h4>
+                <p><strong>Call Sign:</strong> ${flight[1] || 'N/A'}</p>
+            </div>
+            <div class="flight-card-body">
+                <p><strong>Origin Country:</strong> ${flight[2] || 'N/A'}</p>
+                <p><strong>Altitude:</strong> ${flight[7] ? flight[7].toFixed(2) + ' meters' : 'N/A'}</p>
+                <p><strong>Velocity:</strong> ${flight[9] ? flight[9].toFixed(2) + ' m/s' : 'N/A'}</p>
+                <p><strong>Heading:</strong> ${flight[10] ? flight[10].toFixed(2) + '°' : 'N/A'}</p>
+                <p><strong>Time:</strong> ${formattedDate}</p>
+            </div>
+        `;
+            flightResultsContainer.appendChild(flightElement);
+        });
+    }
+});         
 // // Define the buttons and results sections
 // const flightSearchButton = document.getElementById('flightSearchButton');
 // const accommodationSearchButton = document.getElementById('accommodationSearchButton');
@@ -613,118 +740,3 @@ window.onclick = function(event) {
 // });
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    const flightSearchButton = document.getElementById('flightSearchButton');
-    const flightSearchModal = document.getElementById('flightSearchModal');
-    const flightSearchCloseBtn = flightSearchModal.querySelector('.close');
-    const flightSearchForm = document.getElementById('flightSearchForm');
-    const flightResultsContainer = document.getElementById('flightResults');
-
-    // Open Flight Search Modal
-    flightSearchButton.addEventListener('click', () => {
-        console.log('Opening flight search modal');
-        flightSearchModal.style.display = 'block';
-    });
-
-    // Close Flight Search Modal
-    flightSearchCloseBtn.addEventListener('click', () => {
-        console.log('Closing flight search modal');
-        flightSearchModal.style.display = 'none';
-    });
-
-    // Close modal if clicked outside
-    window.addEventListener('click', (event) => {
-        if (event.target === flightSearchModal) {
-            console.log('Click outside modal detected, closing modal');
-            flightSearchModal.style.display = 'none';
-        }
-    });
-
-    // Flight Search Form Submission
-    flightSearchForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const fromLocation = document.getElementById('fromId').value.toUpperCase();
-        const toLocation = document.getElementById('toId').value.toUpperCase();
-        const departDate = document.getElementById('departDate').value;
-
-        console.log('Form submitted with values:', { fromLocation, toLocation, departDate });
-
-        try {
-            // Show loading state
-            flightResultsContainer.innerHTML = '<p>Searching for flights...</p>';
-            console.log('Fetching flight data from API...');
-
-            // OpenSky Network API
-            const response = await fetch('https://opensky-network.org/api/states/all');
-            console.log('API response status:', response.status);
-
-            if (!response.ok) {
-                throw new Error('API request failed');
-            }
-
-            const flightData = await response.json();
-            console.log('API response data:', flightData);
-
-            displayFlightResults(flightData.states, fromLocation, toLocation);
-
-            // Close modal after search
-            flightSearchModal.style.display = 'none';
-        } catch (error) {
-            console.error('Flight Search Error:', error);
-            flightResultsContainer.innerHTML = `
-                <p class="error">Unable to retrieve flights. Please try again.</p>
-                <p>Error details: ${error.message}</p>
-            `;
-        }
-    });
-
-    // Function to display flight results
-    function displayFlightResults(flights, fromAirport, toAirport) {
-        console.log('Displaying flight results', { flights, fromAirport, toAirport });
-
-        // Clear previous results
-        flightResultsContainer.innerHTML = '';
-
-        // Filter and process flights
-        const filteredFlights = flights?.filter(flight => {
-            // Basic filtering - check if flight's origin or destination matches search criteria
-            return (flight[1] && 
-                   (flight[1].toUpperCase().includes(fromAirport) || 
-                    flight[1].toUpperCase().includes(toAirport)));
-        });
-
-        console.log('Filtered flights:', filteredFlights);
-
-        // Check if flights array is empty
-        if (!filteredFlights || filteredFlights.length === 0) {
-            flightResultsContainer.innerHTML = `
-                <p>No flights found matching your search criteria:</p>
-                <p>From: ${fromAirport}, To: ${toAirport}</p>
-            `;
-            return;
-        }
-
-        // Create results header
-        const resultsHeader = document.createElement('h3');
-        resultsHeader.textContent = `Flight Results (${filteredFlights.length} flights found)`;
-        flightResultsContainer.appendChild(resultsHeader);
-
-        // Create results
-        filteredFlights.forEach((flight, index) => {
-            const flightElement = document.createElement('div');
-            flightElement.classList.add('flight-result');
-            flightElement.innerHTML = `
-                <div class="flight-details">
-                    <h4>Flight #${index + 1}</h4>
-                    <p><strong>Call Sign:</strong> ${flight[1] || 'N/A'}</p>
-                    <p><strong>Origin Country:</strong> ${flight[2] || 'N/A'}</p>
-                    <p><strong>Altitude:</strong> ${flight[7] ? flight[7].toFixed(2) + ' meters' : 'N/A'}</p>
-                    <p><strong>Velocity:</strong> ${flight[9] ? flight[9].toFixed(2) + ' m/s' : 'N/A'}</p>
-                    <p><strong>Heading:</strong> ${flight[10] ? flight[10].toFixed(2) + '°' : 'N/A'}</p>
-                </div>
-            `;
-            flightResultsContainer.appendChild(flightElement);
-        });
-    }
-});         

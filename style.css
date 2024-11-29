@@ -59,7 +59,7 @@ header {
     color: white;
     padding: 20px 0;
     text-align: center;
-    min-height: 500px;
+    min-height: 600px;
 }
 
 header .travel h1 {
@@ -378,6 +378,11 @@ input[type="submit"]:hover {
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
   }
+
+  .modal-content p, ul {
+    padding: 20px;
+    font-size: 15px;
+  }
   
   /* Close Button */
   .close {
@@ -393,3 +398,106 @@ input[type="submit"]:hover {
     text-decoration: none;
     cursor: pointer;
   }  
+
+  .modal-content button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff; /* Text color */
+    background-color: #0b1b2d; /* Button color */
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer;
+    text-align: center;
+    align-items: center;
+    text-decoration: none; /* Remove underline for links styled as buttons */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  /* Style for the flight card container */
+.flight-card {
+    background-color: #0b1b2d;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin: 10px 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    margin-left: 20px;
+}
+
+.flight-card:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+/* Style for the card header (Flight # and Call Sign) */
+.flight-card-header {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* Style for the flight details section */
+.flight-card-body p {
+    margin: 8px 0;
+    font-size: 14px;
+    color: #ffff;
+}
+
+/* Bold labels for the flight details */
+.flight-card-body strong {
+    color: #007bff;
+}
+
+/* Results container header */
+/* h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+} */
+
+/* Adding padding and margin for the results container */
+#flightResultsContainer {
+    margin: 20px;
+}
+
+/* Layout for larger screens */
+@media (min-width: 768px) {
+    .flight-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+    .flight-card {
+        width: 400px; /* Slightly larger cards on bigger screens */
+    }
+}
+
+/* Adjust for tablets */
+@media (max-width: 767px) {
+    .flight-card {
+        width: 90%; /* Full-width cards with some padding */
+        margin: 10px auto;
+        padding: 15px;
+    }
+}
+
+/* Adjust for mobile phones */
+@media (max-width: 480px) {
+    .flight-card {
+        width: 100%; /* Full-width for smaller screens */
+        font-size: 14px; /* Slightly smaller text */
+        padding: 10px;
+    }
+    .flight-card h4 {
+        font-size: 16px;
+    }
+    .flight-card p {
+        font-size: 12px;
+    }
+}
