@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Travel Sphere</title>
+</head>
+<body>
+    <header>
+        <div class="travel">
+            <h1>Travel <span>Sphere</span></h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#destinations">Destinations</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <!-- Authentication Links -->
+                <li><a href="#login" id="loginLink">Log In</a></li>
+                <li><a href="#signup" id="signupLink">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+     <!-- Modal for Login -->
+     <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeLogin">&times;</span>
+            <h2>Login</h2>
+            <form action="#" method="post">
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Sign-Up -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeSignup">&times;</span>
+            <h2>Sign Up</h2>
+            <form action="#" method="post">
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <input type="submit" value="Sign Up">
+            </form>
+        </div>
+    </div>
+
+    
+    <section id="about">
+        <h2>Welcome to Travel<span>Sphere</span></h2>
+        <p>Traveling Consultancy and Destination Solutions</p>
+
+    </section>
+
+    <section id="services">
+        <h2>Our Services</h2>
+        <button id="flightSearchButton" class="service">
+            <h3>Flight Booking</h3>
+            <p>Quick and affordable flight bookings to various destinations.</p>
+        </button>
+        <button id="accommodationSearchButton" class="service">
+            <h3>Accommodation</h3>
+            <p>Quality accommodation options to suit every budget.</p>
+        </button>
+        <button id="travelplans" class="service">
+            <h3>Custom Travel Plans</h3>
+            <p>Personalized travel itineraries to ensure a seamless trip.</p>  
+        </button>
+    </section>
+
+    <section id="results">
+        <h2>Search Results</h2>
+        <div id="flightResults"></div>
+        <div id="accommodationResults"></div>
+    </section>
+
+    
+      <div id="flightSearchModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Flight Search</h2>
+          <form id="flightSearchForm">
+            <label for="fromId">From (Departure Location):</label>
+            <input type="text" id="fromId" name="fromId" 
+                   placeholder="Enter IATA Airport Code (e.g., JFK, LHR)" 
+                   required 
+                   pattern="[A-Z]{3}"
+                   title="Please enter a valid 3-letter IATA airport code"
+            ><br>
+            <small>Example: JFK for New York, LHR for London</small><br><br>
+            
+            <label for="toId">To (Arrival Location):</label>
+            <input type="text" id="toId" name="toId" 
+                   placeholder="Enter IATA Airport Code (e.g., LAX, CDG)" 
+                   required 
+                   pattern="[A-Z]{3}"
+                   title="Please enter a valid 3-letter IATA airport code"
+            ><br>
+            <small>Example: LAX for Los Angeles, CDG for Paris</small><br><br>
+            
+            <label for="departDate">Departure Date:</label>
+            <input type="date" id="departDate" name="departDate" required><br>
+            <small>Select a date for your flight</small><br><br>
+            
+            <label for="returnDate">Return Date:</label>
+            <input type="date" id="returnDate" name="returnDate"><br><br>
+            
+            <label for="adults">Adults:</label>
+            <input type="number" id="adults" name="adults" value="1" min="1"><br><br>
+            
+            <button type="submit">Search Flights</button>
+          </form>
+          <div id="airportCodeHelp">
+            <h3>Need Help Finding Airport Codes?</h3>
+            <p>IATA codes are 3-letter codes that represent airports worldwide. 
+               Some common examples:
+               <ul>
+                 <li>JFK - John F. Kennedy International Airport, New York</li>
+                 <li>LHR - Heathrow Airport, London</li>
+                 <li>LAX - Los Angeles International Airport</li>
+                 <li>CDG - Charles de Gaulle Airport, Paris</li>
+               </ul>
+            </p>
+            <p>You can find airport codes online or check airline websites.</p>
+          </div>
+        </div>
+    </div>
+
+      <!-- Modal for Accommodation Search -->
+      <div id="accommodationSearchModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Accommodation Search</h2>
+          <form id="accommodationSearchForm">
+            <label for="cityId">City ID (e.g., 1234):</label>
+            <input type="text" id="cityId" name="cityId" placeholder="e.g., Kigali" required><br><br>
+            
+            <label for="arrivalDate">Arrival Date:</label>
+            <input type="date" id="arrivalDate" name="arrivalDate" required><br><br>
+            
+            <label for="departureDate">Departure Date:</label>
+            <input type="date" id="departureDate" name="departureDate" required><br><br>
+            
+            <label for="adults">Adults:</label>
+            <input type="number" id="adults" name="adults" value="1" min="1"><br><br>
+            
+            <button type="submit">Search Accommodation</button>
+          </form>
+        </div>
+      </div>
+
+
+    <section id="destinations">
+        <h2>Featured Destinations</h2>
+        <div class="gallery">
+            <a href="#"><img src="cooldes.webp" alt="image1"></a>
+            <a href="#"><img src="cooldes1.webp" alt="image2"></a>
+            <a href="#"><img src="cooldes2.webp" alt="image3"></a>
+            <a href="#"><img src="cooldes3.jpg" alt="image4"></a>
+            <a href="#"><img src="cooldes4.jpg" alt="image5"></a>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Contact <span>Us</span></h2>
+      <form action="#" method="post">
+        <div class="input-box">
+          <input type="text" placeholder="Full Name">
+          <input type="email" placeholder="Email">
+        </div>
+        <div class="input-box">
+          <input type="number" placeholder="Phone Number">
+          <input type="text" placeholder="Subject">
+        </div>
+        <textarea name="" id="" cols="30" rows="10" placeholder="Your Message"></textarea>
+        <input type="submit" value="Send Message" class="send">
+      </form>
+    </section>
+    
+    <footer>
+        <p>&copy; 2024 TravelSphere. All rights reserved.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
+
+<!-- Modal for Flight Search -->
+    <!-- <div id="flightSearchModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Flight Search</h2>
+          <form id="flightSearchForm">
+            <label for="fromId">From (Departure Location):</label>
+            <input type="text" id="fromId" name="fromId" placeholder="e.g., JFK.AIRPORT" required><br><br>
+            
+            <label for="toId">To (Arrival Location):</label>
+            <input type="text" id="toId" name="toId" placeholder="e.g., LHR.AIRPORT" required><br><br>
+            
+            <label for="departDate">Departure Date:</label>
+            <input type="date" id="departDate" name="departDate" required><br><br>
+            
+            <label for="returnDate">Return Date:</label>
+            <input type="date" id="returnDate" name="returnDate"><br><br>
+            
+            <label for="adults">Adults:</label>
+            <input type="number" id="adults" name="adults" value="1" min="1"><br><br>
+            
+            <button type="submit">Search Flights</button>
+          </form>
+        </div>
+      </div> -->
+
+
