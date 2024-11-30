@@ -106,5 +106,7 @@ To deploy the application:
 
 ---
 
+Link to demo video - https://www.loom.com/share/f249d13d035a493f96b4e48cc9d57bc4?sid=a8c63303-0ed9-4c7a-9429-d88fcc33e266
+
 
 
